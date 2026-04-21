@@ -1,6 +1,8 @@
-path: /home/ubuntu/work/drake_repo/yolo_dataset
-train: train/images
-val: val/images
+# Orange Sniper Dataset Configuration
+path: ./yolo_dataset # путь относительно корня репозитория
+train: images/train   # папка с картинками для обучения
+val: images/val       # папка с картинками для проверки
 
+# Классы
 names:
   0: orange
