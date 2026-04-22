@@ -34,15 +34,27 @@ def train():
     )
     print("--- Обучение завершено! ---")
     
-    # Авто-загрузка на GitHub
-    print("--- Отправка результатов на GitHub... ---")
-    os.system('git config --global user.email "colab@google.com"')
-    os.system('git config --global user.name "Google Colab"')
+    # Авто-загру    # 4. Экспорт в ONNX
+    print("Экспортируем модель в формат ONNX...")
+    try:
+        onnx_path = model.export(format='onnx', imgsz=640)
+        print(f"Модель успешно экспортирована: {onnx_path}")
+    except Exception as e:
+        print(f"Ошибка при экспорте в ONNX: {e}")
+
+    # 5. Сохраняем результат на GitHub
+    print("Загружаем результаты на GitHub...")
+    os.system('git config --global user.email "colab@example.com"')
+    os.system('git config --global user.name "Colab Trainer"')
+    
+    # Копируем веса и ONNX в корень для пуша
     os.system('cp runs/detect/orange_bot/weights/best.pt ./best.pt')
-    os.system('git add best.pt')
-    os.system('git commit -m "feat: Update best.pt after 2000 epochs training in Colab"')
-    os.system('git push origin main')
-    print("--- Веса успешно обновлены в репозитории! ---")
+    if os.path.exists('runs/detect/orange_bot/weights/best.onnx'):
+        os.system('cp runs/detect/orange_bot/weights/best.onnx ./best.onnx')
+    
+    os.system('git add best.pt best.onnx')
+    os.system('git commit -m "Update trained model weights (PT and ONNX)"')
+    os.system('git push origin main')    print("--- Веса успешно обновлены в репозитории! ---")
 
 if __name__ == '__main__':
     train()
