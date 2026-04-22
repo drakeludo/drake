@@ -16,7 +16,7 @@ def train():
     # Мы используем умеренные параметры, которые точно не "уронят" сессию
     results = model.train(
         data=dataset_path,
-        epochs=100,          # 100 эпох для начала, можно увеличить
+        epochs=2000,         # Увеличено до 2000 эпох для максимальной точности
         imgsz=640,
         batch=16,            # Стабильный батч для T4 GPU
         workers=2,           # Оптимально для 2-ядерного CPU в Colab
@@ -33,6 +33,16 @@ def train():
         save_period=10       # Сохраняем каждые 10 эпох на всякий случай
     )
     print("--- Обучение завершено! ---")
+    
+    # Авто-загрузка на GitHub
+    print("--- Отправка результатов на GitHub... ---")
+    os.system('git config --global user.email "colab@google.com"')
+    os.system('git config --global user.name "Google Colab"')
+    os.system('cp runs/detect/orange_bot/weights/best.pt ./best.pt')
+    os.system('git add best.pt')
+    os.system('git commit -m "feat: Update best.pt after 2000 epochs training in Colab"')
+    os.system('git push origin main')
+    print("--- Веса успешно обновлены в репозитории! ---")
 
 if __name__ == '__main__':
     train()
