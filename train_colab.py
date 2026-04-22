@@ -18,8 +18,8 @@ def train():
         data=dataset_path,
         epochs=2000,         # Увеличено до 2000 эпох для максимальной точности
         imgsz=640,
-        batch=16,            # Стабильный батч для T4 GPU
-        workers=2,           # Оптимально для 2-ядерного CPU в Colab
+        batch=32,            # Увеличено для максимальной загрузки GPU
+        workers=4,           # Увеличено для максимальной загрузки CPU
         name='orange_bot',
         exist_ok=True,
         augment=True,        # Аугментация важна для игр
